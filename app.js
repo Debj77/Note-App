@@ -1,6 +1,15 @@
 const buttonEl = document.getElementById('btn')
 const appEl = document.getElementById('app')
 
+// Load data from local storage when page refreshes for the first time
+loadNotes().forEach(note => {
+    const noteEl = createNodeEl(note.id, note.content)
+    console.log(note.id);
+    console.log(noteEl.content);
+    appEl.insertBefore(noteEl, buttonEl)
+});
+
+
 // function to create text area for note--------------------
 function createNodeEl(id, content){
     const element = document.createElement('textarea')
@@ -8,6 +17,7 @@ function createNodeEl(id, content){
     element.rows = 10;
     element.classList.add('note')
     element.placeholder = 'Enter notes...'
+    element.value = content
     element.addEventListener('dblclick', ()=>{
         if(confirm('do you want to delete?')){
             deleteNote(id, element)
@@ -58,11 +68,6 @@ function loadNotes(){
     return JSON.parse(localStorage.getItem('note-app') || '[]')
 }
 
-// Load data from local storage when page refreshes for the first time
-loadNotes().forEach(note => {
-    const noteEl = createNodeEl(note.id, note.content)
-    appEl.insertBefore(noteEl, buttonEl)
-});
 
 // Button to add new notes-----------------------------------
 buttonEl.addEventListener('click', addNote)
